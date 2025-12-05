@@ -1,26 +1,23 @@
 package utils
 
 import (
-	"bufio"
 	"os"
 	"strconv"
+	"strings"
 )
 
-func ReadLinestoInt(FilePath string) ([]int, error){
-	file, err := os.Open(FilePath)
+func ReadLines(filename string) ([]string, error) {
+	data, err := os.ReadFile(filename)
 	if err != nil {
-		return []int{} , err
+		return []string{}, err
 	}
-	defer file.Close()
+	return strings.Split(strings.TrimSpace(string(data)), "\n"), nil
+}
 
-	var result []int
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		int, err := strconv.Atoi(scanner.Text())
-		if err != nil {
-			return result, err
-		}
-		result = append(result, int)
+func MustAtoi(s string) (int, error) {
+	n, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
 	}
-	return result, scanner.Err()
+	return n, nil
 }
